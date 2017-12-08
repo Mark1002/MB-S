@@ -1,4 +1,17 @@
 {% extends "base.html" %}
 {% block content %}
-<p>welcome to MB/S!</p>
+<div id="prediction-upload"> 
+  <div class="text-left">
+    <button class="btn btn-primary upload-image">上傳圖片</button>
+    <input type="file" name="image" multiple  style="display: none;"
+      data-url="{% url 'image_management:upload_predict_images' %}"
+      data-form-data='{"csrfmiddlewaretoken": "{{ csrf_token }}"}'>
+  </div>
+  <label>測試圖片集合:</label>
+  <div class="image-container">
+  {% for image in image_list %}
+    <img src="{{ image.get_img_url }}" width="50" height="50" class="img-thumbnail">
+  {% endfor %}
+  </div>
+</div>
 {% endblock %}

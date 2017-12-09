@@ -15,4 +15,19 @@
   {% endfor %}
   </div>
 </div>
+<form action="{% url 'image_prediction:image_prediction' %}" method="post">
+  {% csrf_token %}
+  <div class="form-group">
+      <label>選擇訓練模型</label>
+      <select name=model_id class="form-control">
+          {% for model in model_list %}
+              <option value="{{ forloop.counter0 }}">{{ model.name }}</option>
+          {% endfor %}
+      </select>
+  </div>
+  <input class="btn btn-primary" type="submit" value="預測">
+</form>
+{% if result_list != None %}
+{{ result_list }}
+{% endif %}
 {% endblock %}

@@ -3,6 +3,7 @@
 <div id="prediction-upload"> 
   <div class="text-left">
     <button class="btn btn-primary upload-image">上傳圖片</button>
+    <a href="{% url 'image_management:delete_test_images' %}" class="btn btn-danger">清除圖片</a>
     <input type="file" name="image" multiple  style="display: none;"
       data-url="{% url 'image_management:upload_predict_images' %}"
       data-form-data='{"csrfmiddlewaretoken": "{{ csrf_token }}"}'>

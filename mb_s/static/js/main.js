@@ -44,6 +44,8 @@ $(function(){
     $("#prediction-upload .upload-image").click(function() {
         var fileupload = $(this).parent().find("input[type='file']");
         console.log(fileupload);
+        $(".progress-bar").css({"width": "0%"});
+        $(".progress-bar").text("0%");
         file_upload_model(fileupload, "predict_image");
     });    
 });

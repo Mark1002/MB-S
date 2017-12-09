@@ -1,7 +1,7 @@
 from mbs_db.models import ImageFile
 from django.urls import reverse
 from image_management.image_upload_form import ImageUploadForm
-
+from utils.image_utils import ImageUtils
 
 class ImageManagementServices:
     @staticmethod
@@ -21,3 +21,5 @@ class ImageManagementServices:
     def delete_test_images():
         image_lists = ImageFile.objects.all()
         image_lists.delete()
+        image_dir = "images"
+        ImageUtils.update_image_dir(ImageFile, image_dir)

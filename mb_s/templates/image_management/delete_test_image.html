@@ -1,0 +1,4 @@
+{% extends "base_delete_form.html" %}
+{% block delete_message %}是否確定要清空測試圖片?{% endblock %}
+{% block delete_url %}{% url 'image_management:delete_test_images' %}{% endblock %}
+{% block cancel_url %}{% url 'image_prediction:image_prediction' %}{% endblock %}

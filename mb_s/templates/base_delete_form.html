@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="alert alert-danger" role="alert">
+    {% block delete_message %}{% endblock %}
+</div>
+<form action="{% block delete_url %}{% endblock %}" method="post">
+	{% csrf_token %}
+    <input class="btn btn-primary" type="submit" value="確認" />
+    <a class="btn btn-info" href="{% block cancel_url %}{% endblock %}">取消</a>
+</form>
+{% endblock %}

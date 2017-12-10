@@ -1,5 +1,4 @@
 from mbs_db.models import ImageFile
-from django.urls import reverse
 from image_management.image_upload_form import ImageUploadForm
 from utils.image_utils import ImageUtils
 

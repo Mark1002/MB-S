@@ -1,6 +1,5 @@
 import os
 from django.test import TestCase
-from django.test import Client
 from io import BytesIO
 from mbs_db.models import ImageFile
 from PIL import Image
@@ -19,7 +18,6 @@ class ImageManagementTestCase(TestCase):
     def test_upload_image(self):
         image_name = 'unittest.jpg'
         test_image = create_image(image_name)
-        client = Client()
-        client.post('/upload-images/', {'image': test_image})
+        self.client.post('/upload-images/', {'image': test_image})
         self.assertEqual(ImageFile.objects.count(), 1)
         os.remove("images/" + image_name)

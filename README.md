@@ -5,7 +5,7 @@ T-Challenge: 鈦坦敏捷應用開發大賽
 __Python 3.5-3.6__.
 # install dependency package
 ``` 
-$ pip -r requirements.txt 
+$ pip install -r requirements.txt 
 ```
 # run
 ```

@@ -6,6 +6,8 @@ from keras.models import load_model
 class ImagePredictServices:
     @staticmethod
     def run(model_id):
+        if ImageFile.objects.count() == 0:
+            return None
         image_shape = (150, 150)
         image_list = ImageFile.objects.all()
         test_images = []
@@ -23,8 +25,8 @@ class ImagePredictServices:
                 "label_dict": {'周杰倫': 0, '康康': 1,  '蕭敬騰': 2 ,'鄧佳華': 3, '金城武': 4}
             }, 
             {
-                "model_path": "model_dir/稀有生物.h5",
-                "label_dict": {'周杰倫': 0, '康康': 1,  '蕭敬騰': 2 ,'鄧佳華': 3, '金城武': 4}
+                "model_path": "model_dir/罕見生物.h5",
+                "label_dict": {'鮟鱇魚': 0, '紅唇蝙幅魚': 1,  '高鼻羚羊': 2 ,'藍鸚鵡魚': 3, '鯨頭鸛': 4}
             }
         ]
         model_info = model_list[int(model_id)]
@@ -46,7 +48,7 @@ class ImagePredictServices:
     @staticmethod
     def get_prediction_context(result_list=None):
         image_list = ImageFile.objects.all()
-        model_list = [{"name": "男名人"}]
+        model_list = [{"name": "男名人"}, {"name": "罕見生物"}]
         context = {
             "image_list": image_list, 
             "model_list": model_list,

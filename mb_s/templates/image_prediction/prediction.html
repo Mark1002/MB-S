@@ -1,158 +1,103 @@
 {% extends "base.html" %}
-{% block title %}
-<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
-{% endblock %}
-
 {% block content %}
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
-    <a class="navbar-brand" href="">MB/s</a>
-    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarResponsive">
-      <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Home">
-          <a class="nav-link" href="">
-            <i class="fa fa-fw fa-dashboard"></i>
-            <span class="nav-link-text">Home</span>
-          </a>
-        </li>
-		<li class="nav-item" data-toggle="tooltip" data-placement="right" title="My Challenge">
-          <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseExamplePages" data-parent="#exampleAccordion">
-            <i class="fa fa-fw fa-file"></i>
-            <span class="nav-link-text">My Challenge</span>
-          </a>
-          <ul class="sidenav-second-level collapse" id="collapseExamplePages">
-            <li>
-              <a href="">Create Challenge</a>
-            </li>
-            <li>
-              <a href="">Manage Challenge</a>
-            </li>
-          </ul>
-        </li>
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Rank">
-          <a class="nav-link" href="">
-            <i class="fa fa-fw fa-area-chart"></i>
-            <span class="nav-link-text">Rank</span>
-          </a>
-        </li> 
-      </ul>
-      <ul class="navbar-nav sidenav-toggler">
-        <li class="nav-item">
-          <a class="nav-link text-center" id="sidenavToggler">
-            <i class="fa fa-fw fa-angle-left"></i>
-          </a>
-        </li>
-      </ul>
-      <ul class="navbar-nav ml-auto">
-   	    <li class="nav-item">
-          <a class="nav-link" data-toggle="modal" data-target="#exampleModal">
-            <i class="fa fa-fw fa-sign-out"></i>Logout</a>
-        </li>
-      </ul>
-    </div>
-  </nav>
-
- <div class="content-wrapper">
-   <div class="container-fluid">
-   <div class="row">
-	  <div class="col-lg-4">
-         <div class="card mb-3">
-           <div class="card-header">
-             <i class="fa fa-table"></i> Prediction </div>
-           <div class="card-body">
-			<div id="prediction-upload"> 
-			  <div class="text-left">
-				<button class="btn btn-primary upload-image">上傳圖片</button>
-				<a href="{% url 'image_management:delete_test_images' %}" class="btn btn-danger">清除圖片</a>
-				<input type="file" name="image" multiple  style="display: none;"
-				  data-url="{% url 'image_management:upload_predict_images' %}"
-				  data-form-data='{"csrfmiddlewaretoken": "{{ csrf_token }}"}'>
-			  </div>
-			  <label>測試圖片集合:</label>
-			  <div class="image-container">
-			  {% for image in image_list %}
-				<img src="{{ image.get_img_url }}" width="50" height="50" class="img-thumbnail">
-			  {% endfor %}
-			  </div>
+<div class="content-wrapper">
+	<div class="container-fluid">
+	<div class="row">
+	<div class="col-lg-4">
+				<div class="card mb-3">
+					<div class="card-header">
+						<i class="fa fa-table"></i> Prediction </div>
+					<div class="card-body">
+		<div id="prediction-upload"> 
+			<div class="text-left">
+			<button class="btn btn-primary upload-image">上傳圖片</button>
+			<a href="{% url 'image_management:delete_test_images' %}" class="btn btn-danger">清除圖片</a>
+			<input type="file" name="image" multiple  style="display: none;"
+				data-url="{% url 'image_management:upload_predict_images' %}"
+				data-form-data='{"csrfmiddlewaretoken": "{{ csrf_token }}"}'>
 			</div>
-			<div id="option">
-				<form action="{% url 'image_prediction:image_prediction' %}" method="post">
-				  {% csrf_token %}
-				  <div class="form-group">
-					  <label>選擇訓練模型</label>
-					  <select name=model_id class="form-control">
-						  {% for model in model_list %}
-							  <option value="{{ forloop.counter0 }}">{{ model.name }}</option>
-						  {% endfor %}
-					  </select>
-				  </div>
-				  <input class="btn btn-primary" type="submit" value="預測">
-				</form>
-			</div>
-		   </div>
-		 </div>
-	  </div>
-	</div>
-		{% if result_list != None %}
-		<div class="row">
-			{% for result in result_list %}
-			<div class="col-lg-4">
-			  <div class="card mb-3">
-				<div class="card-header">			  
-				  <i class="fa fa-pie-chart"></i> 您的預測結果是：{{ result.ans }}
-				  {% for probs in result.probs %}
-				  {% if probs == result.ans %}
-					  {% if result.ans == "金城武" %}
-					 （{{ result.probs.金城武 }}）
-					  {% elif result.ans == "蕭敬騰" %}
-					 （{{ result.probs.蕭敬騰 }}）
-					  {% elif result.ans == "康康" %}
-					 （{{ result.probs.康康 }}）
-					  {% elif result.ans == "鄧佳華" %}
-					  （{{ result.probs.鄧佳華 }}）
-					  {% else %}
-					 （{{ result.probs.周杰倫 }}）
-					  {% endif %}
-				  {% endif %}
-				  {% endfor %}
-				   </div>			  
-				<div class="card-body">
-				  <div id="chartContainer" style="height: 300px; width: 100%;"></div>
-				</div>
-			  </div>
-			</div>
-			<script type="text/javascript">
-			window.onload = function () {
-				var chart = new CanvasJS.Chart("chartContainer",
-				{		
-					legend: {
-						maxWidth: 350,
-						itemWidth: 120
-					},
-					data: [
-					{
-						type: "pie",
-						showInLegend: true,
-						legendText: "{indexLabel}",
-						dataPoints: [						
-							{ y: {{ result.probs.金城武 }}, indexLabel: "金城武" },
-							{ y: {{ result.probs.蕭敬騰 }}, indexLabel: "蕭敬騰" },
-							{ y: {{ result.probs.康康 }}, indexLabel: "康康" },
-							{ y: {{ result.probs.鄧佳華 }}, indexLabel: "鄧佳華" },
-							{ y: {{ result.probs.周杰倫 }}, indexLabel: "周杰倫" },
-						]
-					}
-					]
-				});
-				chart.render();
-			}
-			</script>
+			<label>測試圖片集合:</label>
+			<div class="image-container">
+			{% for image in image_list %}
+			<img src="{{ image.get_img_url }}" width="50" height="50" class="img-thumbnail">
 			{% endfor %}
+			</div>
 		</div>
-		{% endif %}
+		<div id="option">
+			<form action="{% url 'image_prediction:image_prediction' %}" method="post">
+				{% csrf_token %}
+				<div class="form-group">
+					<label>選擇訓練模型</label>
+					<select name=model_id class="form-control">
+						{% for model in model_list %}
+							<option value="{{ forloop.counter0 }}">{{ model.name }}</option>
+						{% endfor %}
+					</select>
+				</div>
+				<input class="btn btn-primary" type="submit" value="預測">
+			</form>
+		</div>
+			</div>
+		</div>
 	</div>
+</div>
+	{% if result_list != None %}
+	<div class="row">
+		{% for result in result_list %}
+		<div class="col-lg-4">
+			<div class="card mb-3">
+				<div class="card-header">			  
+					<i class="fa fa-pie-chart"></i> 您的預測結果是：{{ result.ans }}
+					{% for probs in result.probs %}
+					{% if probs == result.ans %}
+						{% if result.ans == "金城武" %}
+						（{{ result.probs.金城武 }}）
+						{% elif result.ans == "蕭敬騰" %}
+						（{{ result.probs.蕭敬騰 }}）
+						{% elif result.ans == "康康" %}
+						（{{ result.probs.康康 }}）
+						{% elif result.ans == "鄧佳華" %}
+						（{{ result.probs.鄧佳華 }}）
+						{% else %}
+						（{{ result.probs.周杰倫 }}）
+						{% endif %}
+					{% endif %}
+					{% endfor %}
+				</div>			  
+				<div class="card-body">
+					<div id="chartContainer" style="height: 300px; width: 100%;"></div>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript">
+		window.onload = function () {
+			var chart = new CanvasJS.Chart("chartContainer",
+			{		
+				legend: {
+					maxWidth: 350,
+					itemWidth: 120
+				},
+				data: [
+				{
+					type: "pie",
+					showInLegend: true,
+					legendText: "{indexLabel}",
+					dataPoints: [						
+						{ y: {{ result.probs.金城武 }}, indexLabel: "金城武" },
+						{ y: {{ result.probs.蕭敬騰 }}, indexLabel: "蕭敬騰" },
+						{ y: {{ result.probs.康康 }}, indexLabel: "康康" },
+						{ y: {{ result.probs.鄧佳華 }}, indexLabel: "鄧佳華" },
+						{ y: {{ result.probs.周杰倫 }}, indexLabel: "周杰倫" },
+					]
+				}
+				]
+			});
+			chart.render();
+		}
+		</script>
+		{% endfor %}
+	</div>
+	{% endif %}
   </div>
-
+</div>
 {% endblock %}

@@ -42,8 +42,29 @@ class ImagePredictServices:
         for i in range(len(predict_prob_list)):
             image_path = image_list[i].get_img_url()
             ans = label_dict[predict_label[i]]
-            probs = dict((label_dict[j], predict_prob_list[i][j]) for j in range(len(predict_prob_list[i])))
-            result_list.append({"model": model_info["model_name"], "image": image_path, "ans": ans, "probs": probs})
+            probs_list = [
+                {
+                    "name": label_dict[0],
+                    "probability": predict_prob_list[i][0]*100
+                },
+                {
+                    "name": label_dict[1],
+                    "probability": predict_prob_list[i][1]*100
+                },
+                {
+                    "name": label_dict[2],
+                    "probability": predict_prob_list[i][2]*100
+                },
+                {
+                    "name": label_dict[3],
+                    "probability": predict_prob_list[i][3]*100
+                },
+                {
+                    "name": label_dict[4],
+                    "probability": predict_prob_list[i][4]*100
+                }
+            ]
+            result_list.append({"model": model_info["model_name"], "image": image_path, "ans": ans, "probs": probs_list})
 
         return result_list
         

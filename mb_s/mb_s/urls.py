@@ -20,4 +20,6 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^', include('image_prediction.urls')),
     url(r'^', include('image_management.urls')),
+    # url(r'^', include('image_class_management.urls')),
+    # url(r'^', include('challenge_management.urls')),
 ]

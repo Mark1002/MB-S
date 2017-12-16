@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+	<div class="mb-3">
+		<a class="btn btn-primary" href="{% url 'challenge_management:add_challenge' %}">新增 challenge</a>
+	</div>
+    {% if challenge_list %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>no.</th>
+                <th>challenge name</th>
+                <th>function</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for challenge in challenge_list %}
+    	    <tr>
+    		<td>{{ forloop.counter }}</td>
+            <td>{{ challenge.name }}</td>
+            <td>
+                <a class="btn btn-secondary" href="#">顯示 image class</a>
+            </td>    
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No dataset are available.</p>
+    {% endif %}
+{% endblock %}

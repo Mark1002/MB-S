@@ -2,21 +2,11 @@ import os
 from django.db import models
 from django.urls import reverse
 
-class ImageFile(models.Model):
-    model_pic = models.ImageField(upload_to='images/')
-
-    def get_img_url(self):
-        image_name = os.path.basename(str(self.model_pic))
-        return reverse('image_management:images_url', args=[image_name])
-
 class Challenge(models.Model):
     name = models.CharField(max_length=30)
 
     def get_delete_url(self):
         return reverse('challenge_management:delete_challenge', args=[str(self.id)])
-
-    def get_edit_url(self):
-        return reverse('challenge_management:edit_challenge', args=[str(self.id)])
 
     def get_image_class_url(self):
         return reverse('image_class_management:show_image_class', args=[str(self.id)])
@@ -31,11 +21,16 @@ class ImageClass(models.Model):
     def get_delete_url(self):
         return reverse('image_class_management:delete_image_class', args=[str(self.challenge_id), str(self.id)])
 
-    def get_edit_url(self):
-        return reverse('image_class_management:edit_image_class', args=[str(self.challenge_id), str(self.id)])
-
     def __str__(self):
         return self.name
+
+class ImageFile(models.Model):
+    model_pic = models.ImageField(upload_to='images/')
+    imageclass = models.ForeignKey(ImageClass, on_delete=models.CASCADE)
+
+    def get_img_url(self):
+        image_name = os.path.basename(str(self.model_pic))
+        return reverse('image_management:images_url', args=[image_name])
 
 class ModelInfo(models.Model):
     name = models.CharField(max_length=30)

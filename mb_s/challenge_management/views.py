@@ -27,3 +27,8 @@ class AddChallengeView(View):
             return HttpResponseRedirect(reverse('challenge_management:show_challenge'))
         except Exception as e:
             return render(request, 'challenge_management/add_challenge.html', {'error_message': str(e)})
+
+class DeleteChallengeView(View):
+    def post(self, request, challenge_id):
+        ChallengeManagementServices.delete_challenge(challenge_id)
+        return HttpResponseRedirect(reverse('challenge_management:show_challenge'))

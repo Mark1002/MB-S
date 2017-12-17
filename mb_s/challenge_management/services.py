@@ -1,4 +1,5 @@
-from mbs_db.models import Challenge
+from mbs_db.models import Challenge, ImageFile
+from utils.image_utils import ImageUtils
 
 class ChallengeManagementServices:
     @staticmethod
@@ -15,3 +16,9 @@ class ChallengeManagementServices:
     def add_challenge(challenge_name):
         challenge = Challenge(name = challenge_name)
         challenge.save()
+
+    @staticmethod
+    def delete_challenge(challenge_id):
+        challenge = Challenge.objects.get(pk=challenge_id)
+        challenge.delete()
+        ImageUtils.update_image_dir(ImageFile, "images")

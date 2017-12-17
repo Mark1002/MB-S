@@ -5,4 +5,5 @@ app_name = 'image_class_management'
 urlpatterns = [
     url(r'^challenge/(?P<challenge_id>\d+)/imageclass/$', views.ShowImageClassView.as_view(), name='show_image_class'),
     url(r'^challenge/(?P<challenge_id>\d+)/imageclass/add/$', views.AddImageClassView.as_view(), name='add_image_class'),
+     url(r'^challenge/(?P<challenge_id>\d+)/imageclass/delete/(?P<imageclass_id>\d+)/$', views.DeleteImageClassView.as_view(), name='delete_image_class'),
 ]

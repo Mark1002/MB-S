@@ -1,4 +1,5 @@
-from mbs_db.models import Challenge, ImageClass
+from mbs_db.models import Challenge, ImageClass, ImageFile
+from utils.image_utils import ImageUtils
 
 class ImageClassManagementServices:
     @staticmethod
@@ -21,3 +22,4 @@ class ImageClassManagementServices:
     def delete_image_class(imageclass_id):
         imageclass = ImageClass.objects.get(pk=imageclass_id)
         imageclass.delete()
+        ImageUtils.update_image_dir(ImageFile, "images")

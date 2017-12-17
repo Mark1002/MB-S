@@ -9,7 +9,7 @@ class ImagePredictServices:
         if ImageFile.objects.count() == 0:
             return None
         image_shape = (150, 150)
-        image_list = ImageFile.objects.all()
+        image_list = ImageFile.objects.filter(imageclass_id=0)
         test_images = []
         
         for image in image_list:
@@ -47,7 +47,7 @@ class ImagePredictServices:
         
     @staticmethod
     def get_prediction_context(result_list=None):
-        image_list = ImageFile.objects.all()
+        image_list = ImageFile.objects.filter(imageclass_id=0)
         model_list = [{"name": "男名人"}, {"name": "罕見生物"}]
         context = {
             "image_list": image_list, 

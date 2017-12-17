@@ -15,11 +15,15 @@
         <tbody>
         {% for challenge in challenge_list %}
     	    <tr>
-    		<td>{{ forloop.counter }}</td>
-            <td>{{ challenge.name }}</td>
-            <td>
-                <a class="btn btn-secondary" href="{{ challenge.get_image_class_url }}">顯示 image class</a>
-            </td>    
+                <td>{{ forloop.counter }}</td>
+                <td>{{ challenge.name }}</td>
+                <td>
+                    <a class="btn btn-secondary" href="{{ challenge.get_image_class_url }}">顯示 image class</a>
+                    <form style="display:inline-block" action="{{ challenge.get_delete_url }}" method="post">
+                        {% csrf_token %}
+                        <input class="btn btn-danger" type="submit" value="delete" />
+                    </form>
+                </td>    
             </tr>
         {% endfor %}
         </tbody>

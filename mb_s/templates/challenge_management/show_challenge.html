@@ -18,13 +18,13 @@
     		<td>{{ forloop.counter }}</td>
             <td>{{ challenge.name }}</td>
             <td>
-                <a class="btn btn-secondary" href="#">顯示 image class</a>
+                <a class="btn btn-secondary" href="{{ challenge.get_image_class_url }}">顯示 image class</a>
             </td>    
             </tr>
         {% endfor %}
         </tbody>
     </table>
     {% else %}
-    <p>No dataset are available.</p>
+    <div class="alert alert-info" role="alert">No challenge are available.</div>
     {% endif %}
 {% endblock %}

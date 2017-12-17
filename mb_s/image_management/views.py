@@ -13,8 +13,8 @@ log = logging.getLogger(__name__)
 
 
 class ImageUploadView(View):
-    def post(self, request):
-        context = ImageManagementServices.upload_image(request)
+    def post(self, request, imageclass_id=None):
+        context = ImageManagementServices.upload_image(request, imageclass_id)
         return JsonResponse(context)
 
 class ImageUrl(View):

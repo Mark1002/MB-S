@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>challenge: {{ challenge.name }}</h1>
+<div class="mb-3">
+    <a class="btn btn-primary" href="{% url 'image_class_management:add_image_class' challenge.id %}">新增分類</a>
+    <a class="btn btn-info" href="{% url 'challenge_management:show_challenge' %}">返回</a>
+</div>
+{% if imageclass_list %}
+<table id="image-class-upload" class="table">
+    <thead>
+        <tr>
+            <th>類別名稱</th>
+            <th class="w-50">類別圖片</th>
+            <th>function</th>
+        </tr>
+    </thead>
+   <tbody>
+    {% for imageclass in imageclass_list %}
+        <tr>
+            <td>{{ imageclass.name }}</td>
+            <td>
+                <div class="image-container">
+                {% if imageclass.imagefile_set.all %}
+                    {% for imagefile in imageclass.imagefile_set.all %}
+                        <img src="{{ imagefile.get_img_url }}" width="50" height="50" class="img-thumbnail">    
+                	{% endfor %}
+                {% else %}
+                    <div class="alert alert-info" role="alert">尚未上傳圖片</div>
+                {% endif %}
+                </div>
+            </td>
+            <td>
+                <button class="btn btn-primary upload-image">上傳圖片</button>
+                <input type="file" name="image" multiple  style="display: none;"
+                    data-url="{% url 'image_management:upload_images' imageclass.id %}"
+                    data-form-data='{"csrfmiddlewaretoken": "{{ csrf_token }}"}'>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>    
+{% else %}
+    <div class="alert alert-info" role="alert">尚未新增分類</div>
+{% endif %}
+{% endblock %}

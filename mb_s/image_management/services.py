@@ -8,7 +8,7 @@ class ImageManagementServices:
         form = ImageUploadForm(request.POST, request.FILES)
         files = request.FILES.getlist('image')
         if form.is_valid():
-            if imageclass_id == None:
+            if imageclass_id is None:
                 for f in files:
                     imagefile = ImageFile(model_pic=f, imageclass_id=0)
                     imagefile.save()

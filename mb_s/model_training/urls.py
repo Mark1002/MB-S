@@ -1,5 +1,7 @@
 from django.conf.urls import url
-from image_class_management import views
+from model_training import views
 
 app_name = 'model_training'
-urlpatterns = []
+urlpatterns = [
+    url(r'^model-training/$', views.ModelTrainingView.as_view(), name='model_training'),
+]

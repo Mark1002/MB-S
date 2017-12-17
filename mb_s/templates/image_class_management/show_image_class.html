@@ -3,7 +3,11 @@
 <h1>challenge: {{ challenge.name }}</h1>
 <div class="mb-3">
     <a class="btn btn-primary" href="{% url 'image_class_management:add_image_class' challenge.id %}">新增分類</a>
-    <a class="btn btn-success" href="">train</a>
+    <form style="display:inline-block" method="post" action="{% url 'model_training:model_training' %}">
+        {% csrf_token %}
+        <input type="hidden" name="challenge_id" value="{{ challenge.id }}" />
+        <input class="btn btn-success" type="submit" value="train" />
+    </form>
     <a class="btn btn-info" href="{% url 'challenge_management:show_challenge' %}">返回</a>
 </div>
 {% if imageclass_list %}

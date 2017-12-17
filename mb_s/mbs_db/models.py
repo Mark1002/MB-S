@@ -37,7 +37,6 @@ class ModelInfo(models.Model):
     train_challenge = models.CharField(max_length=30)
     model_path = models.CharField(max_length=100)
     label_dict = models.CharField(max_length=200)
-    challenge = models.ForeignKey(Challenge, on_delete=models.CASCADE)
 
     def get_delete_url(self):
         return reverse('model_management:delete_model', args=[str(self.id)])

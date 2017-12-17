@@ -9,6 +9,8 @@ class ImageManagementServices:
         files = request.FILES.getlist('image')
         if form.is_valid():
             if imageclass_id is None:
+                # limit one image
+                ImageManagementServices.delete_test_images()
                 for f in files:
                     imagefile = ImageFile(model_pic=f, imageclass_id=0)
                     imagefile.save()

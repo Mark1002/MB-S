@@ -29,6 +29,9 @@ function file_upload_model(fileupload, context) {
             if(image_container.find("img").length === 0) {
                 image_container.empty();
             }
+            if(context == "predict_image") {
+                image_container.empty();
+            } 
             image_container.append(image);
             console.log(image_container);
         }

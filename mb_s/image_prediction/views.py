@@ -16,7 +16,7 @@ class ImagePredictView(View):
     
     def post(self, request):
         with graph.as_default():
-            result_list = ImagePredictServices.run(request.POST['model_id'])
+            result = ImagePredictServices.run(request.POST['model_id'])
         K.clear_session()
-        context = ImagePredictServices.get_prediction_context(result_list)
+        context = ImagePredictServices.get_prediction_context(result)
         return render(request, 'image_prediction/prediction.html', context)

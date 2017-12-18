@@ -33,6 +33,9 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'image_prediction.apps.ImagePredictionConfig',
     'image_management.apps.ImageManagementConfig',
+    'image_class_management.apps.ImageClassManagementConfig',
+    'challenge_management.apps.ChallengeManagementConfig',
+    'model_training.apps.ModelTrainingConfig',
     'mbs_db.apps.MbsDbConfig',
     'django.contrib.admin',
     'django.contrib.auth',

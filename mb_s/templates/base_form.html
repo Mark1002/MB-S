@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<h4>{% block form_title %}{% endblock %}</h4>
+<form action="{% block action %}{% endblock %}" method="post">
+	<label>{% block label %}{% endblock %}</label>
+	<div class="form-group">
+	    {% csrf_token %}
+	    <input class="form-control" type="text" name="{% block input_name %}{% endblock %}" value="{% block input_value %}{% endblock %}" required/>
+	</div>
+	<input class="btn btn-primary" type="submit" value="{% block submit_value %}{% endblock %}">
+    <a class="btn btn-info" href="{% block herf_url %}{% endblock %}">{% block herf_text %}{% endblock %}</a>
+</form>
+{{ error_message }}
+{% endblock %}

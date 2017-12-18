@@ -1,0 +1,8 @@
+{% extends "base_form.html" %}
+{% block form_title %}add image class{% endblock %}
+{% block action %}{% url 'image_class_management:add_image_class' challenge_id %}{% endblock %}
+{% block label %}image class name:{% endblock %}
+{% block input_name %}image_class_name{% endblock %}
+{% block submit_value %}新增{% endblock %}
+{% block herf_url %}{% url 'image_class_management:show_image_class' challenge_id %}{% endblock %}
+{% block herf_text %}返回 image class 列表{% endblock %}

@@ -101,3 +101,5 @@ ENV/
 .mypy_cache/
 *.sqlite3
 mb_s/images
+mb_s/train_dir
+mb_s/model_dir

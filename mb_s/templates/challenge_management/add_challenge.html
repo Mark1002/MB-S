@@ -1,0 +1,8 @@
+{% extends "base_form.html" %}
+{% block form_title %}new challenge{% endblock %}
+{% block action %}{% url 'challenge_management:add_challenge' %}{% endblock %}
+{% block label %}challenge name:{% endblock %}
+{% block input_name %}challenge_name{% endblock %}
+{% block submit_value %}新增{% endblock %}
+{% block herf_url %}{% url 'challenge_management:show_challenge' %}{% endblock %}
+{% block herf_text %}返回列表{% endblock %}

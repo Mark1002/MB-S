@@ -1,92 +1,79 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="content-wrapper">
-	<div class="container-fluid">
-	<div class="row">
+<div class="row">
 	<div class="col-lg-4">
 		<div class="card mb-3">
-			<div class="card-header">
-				<i class="fa fa-table"></i> Prediction </div>
+			<div class="card-header"><i class="fa fa-table"></i> Prediction </div>
 			<div class="card-body">
-		<div id="prediction-upload"> 
-			<div class="text-left">
-			<button class="btn btn-primary upload-image">上傳圖片</button>
-			<a href="{% url 'image_management:delete_test_images' %}" class="btn btn-danger">清除圖片</a>
-			<input type="file" name="image" multiple  style="display: none;"
-				data-url="{% url 'image_management:upload_predict_images' %}"
-				data-form-data='{"csrfmiddlewaretoken": "{{ csrf_token }}"}'>
-			</div>
-			<label>測試圖片集合:</label>
-			<div class="image-container">
-			{% for image in image_list %}
-			<img src="{{ image.get_img_url }}" width="50" height="50" class="img-thumbnail">
-			{% endfor %}
-			</div>
-		</div>
-		<div id="option">
-			<form action="{% url 'image_prediction:image_prediction' %}" method="post">
-				{% csrf_token %}
-				<div class="form-group">
-					<label>選擇訓練模型</label>
-					<select name=model_id class="form-control">
-						{% for model in model_list %}
-							<option value="{{ forloop.counter0 }}">{{ model.name }}</option>
-						{% endfor %}
-					</select>
-				</div>
-				<input class="btn btn-primary" type="submit" value="預測">
-			</form>
-		</div>
-			</div>
-		</div>
-	</div>
-	</div>
-	{% if result_list != None %}
-	<div class="row">
-		{% for result in result_list %}
-		<div class="col-lg-4">
-			<div class="card mb-3">
-				<div class="card-header">			  
-					<i class="fa fa-pie-chart"></i> 您的預測結果是：{{ result.ans }}
-					{% for probs in result.probs %}
-					{% if probs.name == result.ans %}
-						（{{ probs.probability|floatformat }}%）
-					{% endif %}
+				<div id="prediction-upload"> 
+					<div class="text-left">
+					<button class="btn btn-primary upload-image">上傳圖片</button>
+					<a href="{% url 'image_management:delete_test_images' %}" class="btn btn-danger">清除圖片</a>
+					<input type="file" name="image" style="display: none;"
+						data-url="{% url 'image_management:upload_predict_images' %}"
+						data-form-data='{"csrfmiddlewaretoken": "{{ csrf_token }}"}'>
+					</div>
+					<label>測試圖片集合:</label>
+					<div class="image-container">
+					{% for image in image_list %}
+					<img src="{{ image.get_img_url }}" width="50" height="50" class="img-thumbnail">
 					{% endfor %}
-				</div>			  
-				<div class="card-body">
-					<div id="chartContainer" style="height: 300px; width: 100%;"></div>
+					</div>
+				</div>
+				<div id="option">
+					<form action="{% url 'image_prediction:image_prediction' %}" method="post">
+						{% csrf_token %}
+						<div class="form-group">
+							<label>選擇訓練模型</label>
+							<select name=model_id class="form-control">
+								{% for model in model_list %}
+									<option value="{{ model.id }}">{{ model.train_challenge }}</option>
+								{% endfor %}
+							</select>
+						</div>
+						<input class="btn btn-primary" type="submit" value="預測">
+					</form>
 				</div>
 			</div>
-		</div>		
-		<script type="text/javascript">
-		window.onload = function () {
-			var chart = new CanvasJS.Chart("chartContainer",
-			{		
-				legend: {
-					maxWidth: 350,
-					itemWidth: 120
-				},
-				data: [
-				{
-					type: "pie",
-					showInLegend: true,
-					toolTipContent: "#percent %",
-					legendText: "{indexLabel}",
-					dataPoints: [		
-						{% for probs in result.probs %}					
-						{ y: {{probs.probability}}, indexLabel: "{{probs.name}}" },
-						{% endfor %}
-					]
-				}
-				]
-			});
-			chart.render();
-		}
-		</script>		
-		{% endfor %}
+		</div>
 	</div>
-	{% endif %}
-  </div>
 </div>
+{% if result != None %}
+<div class="row">
+	<div class="col-lg-4">
+		<div class="card mb-3">
+			<div class="card-header">			  
+				<i class="fa fa-pie-chart"></i> 
+				您的預測結果是：{{ result.ans }} ({{ result.percent }}%)
+			</div>			  
+			<div class="card-body">
+				<div id="chartContainer" style="height: 300px; width: 100%;"></div>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+window.onload = function() {
+	var result = {{ result|safe }}
+	console.log(result.probs);
+	var dataPointArray = []
+	for (var key in result.probs) {
+        dataPointArray.push({indexLabel: key, y: result.probs[key]})
+	}
+	var chart = new CanvasJS.Chart("chartContainer",{		
+		legend: {
+			maxWidth: 350,
+			itemWidth: 120
+		},
+		data: [{
+			type: "pie",
+			showInLegend: true,
+			legendText: "{indexLabel}",
+			dataPoints: dataPointArray
+		}]
+	});
+	chart.render();
+};
+</script>
+{% endif %}
 {% endblock %}

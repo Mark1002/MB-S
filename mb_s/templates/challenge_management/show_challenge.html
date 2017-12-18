@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block content %}
+	<div class="mb-3">
+		<a class="btn btn-primary" href="{% url 'challenge_management:add_challenge' %}">新增 challenge</a>
+	</div>
+    {% if challenge_list %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>no.</th>
+                <th>challenge name</th>
+                <th>function</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for challenge in challenge_list %}
+    	    <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ challenge.name }}</td>
+                <td>
+                    <a class="btn btn-secondary" href="{{ challenge.get_image_class_url }}">顯示 image class</a>
+                    <form style="display:inline-block" action="{{ challenge.get_delete_url }}" method="post">
+                        {% csrf_token %}
+                        <input class="btn btn-danger" type="submit" value="delete" />
+                    </form>
+                </td>    
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="alert alert-info" role="alert">No challenge are available.</div>
+    {% endif %}
+{% endblock %}

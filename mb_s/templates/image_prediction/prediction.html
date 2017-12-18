@@ -20,6 +20,7 @@
 					{% endfor %}
 					</div>
 				</div>
+				{% if model_list|length > 0 %}
 				<div id="option">
 					<form action="{% url 'image_prediction:image_prediction' %}" method="post">
 						{% csrf_token %}
@@ -31,9 +32,12 @@
 								{% endfor %}
 							</select>
 						</div>
-						<input class="btn btn-primary" type="submit" value="預測">
+							<input class="btn btn-primary" type="submit" value="預測">
 					</form>
 				</div>
+				{% else %}
+				    <a class="btn btn-success" href="{% url 'challenge_management:add_challenge' %}">建立 new challenge!</a>
+			    {% endif %}
 			</div>
 		</div>
 	</div>

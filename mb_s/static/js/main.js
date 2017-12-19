@@ -68,5 +68,20 @@ $(function(){
         var fileupload = $(this).parent().find("input[type='file']");
         console.log(fileupload);
         file_upload_model(fileupload, "predict_image");
+    });
+    $("#train-model").click(function() {
+       var challenge_id = $("input[name='challenge_id']").val();
+       var csrf_token = $("input[name='challenge_id']").attr('csrfmiddlewaretoken');
+        console.log(csrf_token);
+        var request = $.ajax({
+            url: "/model-training/",
+            method: "post",
+            async: false,
+            data: {challenge_id: challenge_id, csrfmiddlewaretoken: csrf_token},
+            dataType: 'json'
+        });
+        request.done(function(msg) {
+            console.log("finish!!");
+        });
     });    
 });

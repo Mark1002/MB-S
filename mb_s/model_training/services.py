@@ -28,6 +28,8 @@ class ModelTrainingServices:
             os.mkdir(model_dir)
         model.save("model_dir/" + model_name)
         del model
+        context = {"status": "ok", "challenge_id": challenge_id}
+        return context
     
     @staticmethod
     def export_dataset(imageclass_list, training_dir):
@@ -49,8 +51,8 @@ class ModelTrainingServices:
         img_width = 150
         input_shape = (img_height, img_width, 3)
         epochs = 10
-        batch_size = 32
-        nb_train_samples = 1000
+        batch_size = 16
+        nb_train_samples = 500
 
         # image data generator
         train_datagen = ImageDataGenerator(

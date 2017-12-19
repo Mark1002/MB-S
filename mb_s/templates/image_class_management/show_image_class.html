@@ -5,9 +5,11 @@
     <a class="btn btn-primary" href="{% url 'image_class_management:add_image_class' challenge.id %}">新增分類</a>
     <form style="display:inline-block" method="post" action="{% url 'model_training:model_training' %}">
         {% csrf_token %}
-        <input type="hidden" name="challenge_id" value="{{ challenge.id }}" />
+        <input type="hidden" name="challenge_id" value="{{ challenge.id }}" 
+        csrfmiddlewaretoken="{{ csrf_token }}"/>
         <input class="btn btn-success" type="submit" value="train" />
     </form>
+    <button id="train-model">train me</button>
     <a class="btn btn-info" href="{% url 'challenge_management:show_challenge' %}">返回</a>
 </div>
 {% if imageclass_list %}

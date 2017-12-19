@@ -50,9 +50,9 @@ class ModelTrainingServices:
         img_height = 150
         img_width = 150
         input_shape = (img_height, img_width, 3)
-        epochs = 10
-        batch_size = 16
-        nb_train_samples = 500
+        epochs = 5
+        batch_size = 5
+        nb_train_samples = 50
 
         # image data generator
         train_datagen = ImageDataGenerator(

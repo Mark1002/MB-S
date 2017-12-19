@@ -70,18 +70,30 @@ $(function(){
         file_upload_model(fileupload, "predict_image");
     });
     $("#train-model").click(function() {
-       var challenge_id = $("input[name='challenge_id']").val();
-       var csrf_token = $("input[name='challenge_id']").attr('csrfmiddlewaretoken');
+        var challenge_id = $("input[name='challenge_id']").val();
+        var csrf_token = $("input[name='challenge_id']").attr('csrfmiddlewaretoken');
         console.log(csrf_token);
+        
         var request = $.ajax({
             url: "/model-training/",
             method: "post",
-            async: false,
             data: {challenge_id: challenge_id, csrfmiddlewaretoken: csrf_token},
-            dataType: 'json'
+            dataType: 'json',
         });
-        request.done(function(msg) {
-            console.log("finish!!");
+        request.done(function() {
+            console.log("finish");
         });
-    });    
+    });
+    var isTrain = false;
+    (function poll(){
+        setTimeout(function() {
+            $.ajax({ 
+                url: "/model-training/polling/", 
+                dataType: "json"
+            }).done(function(data){
+                isTrain = data.isTrain;
+                console.log(isTrain);
+            }).always(poll);
+        }, 3000);
+    })();    
 });

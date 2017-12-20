@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+<table class="table">
+    <thead>
+        <tr>
+            <th>no.</th>
+            <th>challenge name</th>
+            <th>class type</th>
+            <th>function</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for model in model_list %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ model.train_challenge }}</td>
+            <td>{{ model.label_dict }}</td>
+            <td>
+                <form style="display:inline-block" action="{{ model.get_delete_url }}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="model_id" value="{{ model.id }}" />
+                    <input class="btn btn-danger" type="submit" value="delete" />
+                </form>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

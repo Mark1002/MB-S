@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'image_class_management.apps.ImageClassManagementConfig',
     'challenge_management.apps.ChallengeManagementConfig',
     'model_training.apps.ModelTrainingConfig',
+    'model_management.apps.ModelManagementConfig',
     'mbs_db.apps.MbsDbConfig',
     'django.contrib.admin',
     'django.contrib.auth',

@@ -39,4 +39,4 @@ class ModelInfo(models.Model):
     label_dict = models.CharField(max_length=200)
 
     def get_delete_url(self):
-        return reverse('model_management:delete_model', args=[str(self.id)])
+        return reverse('model_management:delete_model')

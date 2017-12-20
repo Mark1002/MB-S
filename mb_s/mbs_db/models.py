@@ -40,3 +40,6 @@ class ModelInfo(models.Model):
 
     def get_delete_url(self):
         return reverse('model_management:delete_model')
+
+class TrainingJob(models.Model):
+    is_train = models.BooleanField(default=False)

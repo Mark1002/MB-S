@@ -80,9 +80,7 @@ $(function(){
             data: {challenge_id: challenge_id, csrfmiddlewaretoken: csrf_token},
             dataType: 'json',
         });
-        request.done(function() {
-            console.log("finish");
-        });
+        $("#training-message").css("display", "block");
     });
     var isTrain = false;
     (function poll(){
@@ -92,8 +90,11 @@ $(function(){
                 dataType: "json"
             }).done(function(data){
                 isTrain = data.isTrain;
-                console.log(isTrain);
+                if (isTrain) {
+                    console.log("train finish!!");
+                    $('#training-finish').modal();
+                }
             }).always(poll);
-        }, 3000);
+        }, 1000);
     })();    
 });

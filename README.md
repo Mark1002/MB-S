@@ -22,3 +22,9 @@ $ pip install -r requirements.txt
 $ python manage.py migrate
 $ python manage.py runserver
 ```
+using docker
+```
+$docker pull mark1002/mb_s:latest
+$docker run --rm -it -p 8000:8000 mark1002/mb_s:latest
+
+```

@@ -7,6 +7,9 @@ class ModelTrainingServices:
     @staticmethod
     def run(challenge_id):
         train_dir = "train_dir"
+        if not os.path.exists(train_dir):
+            os.mkdir(train_dir)
+
         imageclass_list = ImageClass.objects.filter(challenge_id=challenge_id)
         ModelTrainingServices.export_dataset(imageclass_list, train_dir)
         # 新增 training job

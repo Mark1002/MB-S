@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  web:
+    build: .
+    command: bash -c "cd mb_s && python3 manage.py migrate && python3 manage.py runserver 0.0.0.0:8000"
+    ports:
+    - '8000:8000'
+    volumes:
+      - ./mb_s/images:/MB-S/mb_s/images
+      - ./mb_s/log:/MB-S/mb_s/log
+      - ./mb_s/model_dir:/MB-S/mb_s/model_dir

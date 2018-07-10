@@ -49,6 +49,7 @@ jobs:
           command: |
             . venv/bin/activate
             cd mb_s
+            mkdir log
             python manage.py test
 
       - store_artifacts:

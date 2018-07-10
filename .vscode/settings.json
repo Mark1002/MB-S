@@ -1,3 +1,13 @@
 {
-    "python.pythonPath": "/Users/Mark1002/anaconda/bin/python"
+    "python.pythonPath": "/Users/Mark1002/anaconda/bin/python",
+    "python.unitTest.unittestArgs": [
+        "-v",
+        "-s",
+        "./mb_s",
+        "-p",
+        "*test*.py"
+    ],
+    "python.unitTest.pyTestEnabled": false,
+    "python.unitTest.nosetestsEnabled": false,
+    "python.unitTest.unittestEnabled": true
 }

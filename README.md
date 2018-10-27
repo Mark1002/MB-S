@@ -12,7 +12,7 @@
 
 
 # 環境需求
-__Python 3.5-3.6__.
+__Python 3.5__.
 # install dependency package
 ``` 
 $ pip install -r requirements.txt 
@@ -22,9 +22,7 @@ $ pip install -r requirements.txt
 $ python manage.py migrate
 $ python manage.py runserver
 ```
-using docker
+# using docker to run
 ```
-$docker pull mark1002/mb_s:latest
-$docker run --rm -it -p 8000:8000 mark1002/mb_s:latest
-
+$ docker-compose up
 ```

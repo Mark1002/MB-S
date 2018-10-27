@@ -95,6 +95,6 @@ $(function(){
                     $('#training-finish').modal();
                 }
             }).always(poll);
-        }, 1000);
+        }, 5000);
     })();    
 });

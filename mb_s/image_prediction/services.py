@@ -35,7 +35,9 @@ class ImagePredictServices:
         label_dict = eval(model_info.label_dict)
         label_dict = dict((v, k) for (k,v) in label_dict.items())
         predict_prob_list = np.round(model.predict(test_images), 5)
-        predict_label = model.predict_classes(test_images)
+        logger.info("predict prob: {}".format(predict_prob_list))
+        predict_label = np.argmax(predict_prob_list, axis=1)
+        logger.info("predict label: {}".format(predict_label))
         image_query_sets = self.fetch_image_query_sets()        
         result_list = []
         for i in range(len(predict_prob_list)):

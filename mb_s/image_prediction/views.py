@@ -3,7 +3,7 @@ import tensorflow as tf
 from django.shortcuts import render
 from django.views import View
 from image_prediction.services import ImagePredictServices
-from keras import  backend as K
+from keras import backend as K
 
 graph = tf.get_default_graph()
 logger = logging.getLogger(__name__)

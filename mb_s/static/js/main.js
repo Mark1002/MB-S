@@ -74,13 +74,15 @@ $(function(){
         var csrf_token = $("input[name='challenge_id']").attr('csrfmiddlewaretoken');
         console.log(csrf_token);
         
-        var request = $.ajax({
+        $.ajax({
             url: "/model-training/",
             method: "post",
             data: {challenge_id: challenge_id, csrfmiddlewaretoken: csrf_token},
             dataType: 'json',
+        }).done(function(res) {
+            console.log(res);
+            $("#training-message").css("display", "block");
         });
-        $("#training-message").css("display", "block");
     });
     var isTrain = false;
     (function poll(){
@@ -95,6 +97,6 @@ $(function(){
                     $('#training-finish').modal();
                 }
             }).always(poll);
-        }, 5000);
+        }, 50000);
     })();    
 });

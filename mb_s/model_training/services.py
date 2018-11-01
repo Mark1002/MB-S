@@ -20,29 +20,33 @@ class ModelTrainingServices:
             train_job = TrainingJob()
             train_job.save()
             # training model
-            train_info = self.train_from_dir(train_dir)
+            train_result = self.train_from_dir(train_dir)
             # 訓練完成時設為 true
             train_job = TrainingJob.objects.last()
             train_job.is_train = True
             train_job.save()
-            model = train_info['model']
-            label_dict = train_info['label_dict']
-            # save model info to db
-            model_name = str(uuid.uuid1()) + ".h5"
-            model_dir = "model_dir"
-            challenge = Challenge.objects.get(pk=challenge_id)
-            model_info = ModelInfo(
-                name = model_name, 
-                model_path = model_dir + "/" + model_name,
-                train_challenge = challenge.name,
-                label_dict = label_dict)
-            model_info.save()
-            # save model to model_dir
-            if not os.path.exists(model_dir):
-                os.mkdir(model_dir)
-            model.save("model_dir/" + model_name)
-            logger.info("save model!")
-            del model
+            # save model to db and export model
+            self.save_model(train_result, challenge_id)
+    
+    def save_model(self, train_result, challenge_id):
+        model = train_result['model']
+        label_dict = train_result['label_dict']
+        # save model info to db
+        model_name = str(uuid.uuid1()) + ".h5"
+        model_dir = "model_dir"
+        challenge = Challenge.objects.get(pk=challenge_id)
+        model_info = ModelInfo(
+            name = model_name, 
+            model_path = model_dir + "/" + model_name,
+            train_challenge = challenge.name,
+            label_dict = label_dict)
+        model_info.save()
+        # save model to model_dir
+        if not os.path.exists(model_dir):
+            os.mkdir(model_dir)
+        model.save("model_dir/" + model_name)
+        logger.info("save model!")
+        del model
 
     def export_dataset(self, imageclass_list, training_dir):
         if os.path.exists(training_dir):

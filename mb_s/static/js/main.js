@@ -84,19 +84,18 @@ $(function(){
             $("#training-message").css("display", "block");
         });
     });
-    var isTrain = false;
     (function poll(){
         setTimeout(function() {
             $.ajax({ 
                 url: "/model-training/polling/", 
                 dataType: "json"
             }).done(function(data){
-                isTrain = data.isTrain;
+                var isTrain = data.is_train_finish;
                 if (isTrain) {
                     console.log("train finish!!");
                     $('#training-finish').modal();
                 }
             }).always(poll);
-        }, 50000);
+        }, 5000);
     })();    
 });

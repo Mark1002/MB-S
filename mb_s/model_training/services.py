@@ -1,6 +1,7 @@
 import logging
 import threading
 import shutil, os, uuid
+from django.contrib.sessions.models import Session
 from mbs_db.models import Challenge, ImageFile, ImageClass, ModelInfo, TrainingJob
 from cnn_model.cnn_factory import CNNFactory
 from keras.preprocessing.image import ImageDataGenerator
@@ -8,23 +9,21 @@ from keras.preprocessing.image import ImageDataGenerator
 logger = logging.getLogger(__name__)
 lock = threading.Lock()
 class ModelTrainingServices:
-    def run(self, challenge_id):
+    def run(self, challenge_id, session):
         with lock:
+            session['is_training'] = True
             train_dir = "train_dir"
             if not os.path.exists(train_dir):
                 os.mkdir(train_dir)
 
             imageclass_list = ImageClass.objects.filter(challenge_id=challenge_id)
             self.export_dataset(imageclass_list, train_dir)
-            # 新增 training job
-            train_job = TrainingJob()
-            train_job.save()
             # training model
             train_result = self.train_from_dir(train_dir)
-            # 訓練完成時設為 true
-            train_job = TrainingJob.objects.last()
-            train_job.is_train = True
-            train_job.save()
+            s = Session.objects.get(pk=session.session_key)
+            s.delete()
+            # record train finish alert
+            TrainingJob(is_train=True).save()
             # save model to db and export model
             self.save_model(train_result, challenge_id)
     
@@ -101,12 +100,10 @@ class ModelTrainingServices:
         return train_info
 
     @classmethod    
-    def get_training_state(cls):
-        train_job = TrainingJob.objects.last()
-        if train_job is None:
-            return False
-        elif train_job.is_train is True:
-            train_job.delete()
-            return True
-        else:
-            return train_job.is_train
+    def get_training_state(cls, session):
+        #TODO change to cache
+        is_train_finish_alert = bool(TrainingJob.objects.last())
+        logger.info("is_train_finish_alert: {}".format(is_train_finish_alert))
+        if is_train_finish_alert:
+            TrainingJob.objects.last().delete()
+        return is_train_finish_alert

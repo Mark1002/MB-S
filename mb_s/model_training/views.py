@@ -14,11 +14,13 @@ logger = logging.getLogger(__name__)
 
 class ModelTrainingView(View):
     def post(self, request):
+        if request.session.get('is_training', False):
+            return JsonResponse({"status": "error", "message": "model is training!"})
         challenge_id = request.POST['challenge_id']
         service = ModelTrainingServices()
         try:
             with graph.as_default():
-                t = threading.Thread(target=service.run, args=(challenge_id,))
+                t = threading.Thread(target=service.run, args=(challenge_id, request.session))
                 t.start()
             K.clear_session()
         except Exception as e:
@@ -28,5 +30,5 @@ class ModelTrainingView(View):
 
 class PollingTrainState(View):
     def get(self, request):
-        is_train = ModelTrainingServices.get_training_state()
-        return JsonResponse({"status": "ok", "isTrain": is_train})
+        is_train_finish = ModelTrainingServices.get_training_state(request.session)
+        return JsonResponse({"status": "ok", "is_train_finish": is_train_finish})

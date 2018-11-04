@@ -80,8 +80,13 @@ $(function(){
             data: {challenge_id: challenge_id, csrfmiddlewaretoken: csrf_token},
             dataType: 'json',
         }).done(function(res) {
-            console.log(res);
-            $("#training-message").css("display", "block");
+            console.log(res); 
+            if(res.status == "error") {
+                $("#training-message").html("<div class='alert alert-danger' role='alert'>同一時間只能訓練一個模型</div>");
+            }
+            else {
+                $("#training-message").html("<div class='alert alert-success' role='alert'>開始訓練模型，完成後將自動通知，請稍候片刻</div>");
+            }
         });
     });
     (function poll(){

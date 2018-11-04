@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 class ModelTrainingView(View):
     def post(self, request):
         if request.session.get('is_training', False):
-            return JsonResponse({"status": "error", "message": "model is training!"})
+            return JsonResponse({"status": "error", "message": "previous model is still training!"})
         challenge_id = request.POST['challenge_id']
         service = ModelTrainingServices()
         try:
@@ -26,7 +26,7 @@ class ModelTrainingView(View):
         except Exception as e:
             logger.info(str(e))
             return HttpResponseRedirect(reverse('image_class_management:show_image_class', args=[challenge_id]))
-        return JsonResponse({"status": "ok", "challenge_id": challenge_id})
+        return JsonResponse({"status": "ok", "message": "start to train model"})
 
 class PollingTrainState(View):
     def get(self, request):

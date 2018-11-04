@@ -7,9 +7,7 @@
     <button class="btn btn-success" style="cursor: pointer" id="train-model">train</button>
     <a class="btn btn-info" href="{% url 'challenge_management:show_challenge' %}">返回</a>
 </div>
-<div id="training-message" style="display:none" class="alert alert-success" role="alert">
-    開始訓練模型，完成後將自動通知，請稍候片刻
-</div>
+<div id="training-message"></div>
 {% if imageclass_list %}
 <table id="image-class-upload" class="table">
     <thead>
